@@ -1,0 +1,4 @@
+FROM resin/rpi-nodejs
+
+RUN apt-get install -y fswebcam
+RUN npm config set python /usr/bin/python2.7
