@@ -1,5 +1,8 @@
 var camera, createCamera;
 
+var fs = require('fs');
+fs.unlinkSync('/tmp/snowsnap/snapshot.jpg');
+
 createCamera = require('./camera').createCamera;
 
 camera = createCamera({

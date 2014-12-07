@@ -11,7 +11,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "preinstall": "bash deps.sh"
+    "preinstall": "bash deps.sh",
+	"start": "modprobe w1-gpio && modprobe w1-therm && node server.js"
   },
   "author": "eva",
   "license": "ISC"
