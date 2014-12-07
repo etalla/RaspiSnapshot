@@ -1,15 +1,13 @@
-var EventEmitter, createCamera, exec, fs, moment;
+var EventEmitter, createCamera, exec, fs;
 
 fs = require('fs');
-
-moment = require('moment-timezone');
 
 exec = require('child_process').exec;
 
 EventEmitter = require('events').EventEmitter;
 
 createCamera = function(_opts) {
-  var camera, lastSnapshot, opts;
+  var camera, opts;
   camera = new EventEmitter;
   opts = {
     imageDirectory: _opts.imageDirectory || '/tmp/resin-cctv/',
@@ -20,10 +18,6 @@ createCamera = function(_opts) {
   if (opts.imageDirectory[opts.imageDirectory.length - 1] !== '/') {
     opts.imageDirectory += '/';
   }
-  lastSnapshot = null;
-  camera.getLastSnapshot = function() {
-    return lastSnapshot;
-  };
   camera.getImageDirectory = function() {
     return opts.imageDirectory;
   };
@@ -47,43 +41,22 @@ createCamera = function(_opts) {
     });
   };
   camera.takeSnapshot = function() {
-    var date, execOpts, imageProc, mom, path;
-    mom = moment().tz(opts.timezone);
-    date = mom.format();
+    var execOpts, imageProc, path;
     path = opts.imageDirectory + 'snap.jpg';
     execOpts = {
       timeout: 10000
     };
-    console.log('[' + date + '] Taking snapshot.');
-    imageProc = exec('fswebcam -r ' + opts.resolution + ' --timestamp "' + date + '" --title "Resin CCTV" --font /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf ' + path, execOpts, function(error, stdout, stderr) {
+    console.log('Taking snapshot.');
+    imageProc = exec('fswebcam -r ' + opts.resolution + ' --title "Resin CCTV" --font /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf ' + path, execOpts, function(error, stdout, stderr) {
       if (error != null) {
         console.log('Error taking snapshot: ' + error);
         return;
       }
       console.log('fswebcam ' + JSON.stringify(stdout) + ' ' + JSON.stringify(stderr));
-      lastSnapshot = {
-        path: path,
-        date: date,
-        moment: mom,
-        url: '/images/' + date + '.jpg'
-      };
-      return camera.emit('snapshot', lastSnapshot);
+      return camera.emit('snapshot');
     });
     return imageProc.stdout.pipe(process.stdout);
   };
-  camera.snapshotLoop = function(interval) {
-    camera.takeSnapshot();
-    camera.interval = interval;
-    return setInterval(function() {
-      if ((lastSnapshot != null) && moment().diff(lastSnapshot.moment) < interval) {
-
-      } else {
-        return camera.takeSnapshot();
-      }
-    }, 100);
-  };
-  camera.setup();
-  return camera;
 };
 
 exports.createCamera = createCamera;
