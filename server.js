@@ -1,28 +1,48 @@
-var RaspiCam = require("raspicam");
+var camera, createCamera;
 
-var photo = new RaspiCam({ 
-	mode: "photo",
-	output: "/data/snap.jpg", // String - the path and filename where you want to store the photos (use sprintf-style variables, like %d, for incrementing timelapse photos)
-	encoding: "jpg"
+createCamera = require('./camera').createCamera;
+
+camera = createCamera({
+  imageDirectory: process.env.IMAGE_DIRECTORY || '/tmp/snowsnap/',
+  timezone: process.env.TIMEZONE || 'UTC',
+  resolution: process.env.RESOLUTION || '1280x720',
+  device: process.env.VIDEO_DEVICE || '/dev/video0'
 });
 
-//to take a snapshot, start a timelapse or video recording
-photo.start( );
+camera.takeSnapshot();
 
-//to stop a timelapse or video recording
-photo.stop( );
+var nodemailer = require('nodemailer');
 
-//listen for the "started" event triggered when the start method has been successfully initiated
-photo.on("started", function(){ 
-    console.log("started");
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'snowsnap007@gmail.com',
+        pass: 'suavemente'
+    }
 });
 
-//listen for the "read" event triggered when each new photo/video is saved
-photo.on("read", function(err, timestamp, filename){ 
-    console.log("read");
-});
+// NB! No need to recreate the transporter object. You can use
+// the same transporter object for all e-mails
 
-//listen for the process to exit when the timeout has been reached
-photo.on("exited", function(){
-    console.log("exited");
+// setup e-mail data with unicode symbols
+var mailOptions = {
+    from: 'Snow Snap ✔ <snowsnap007@gmail.com>', // sender address
+    to: 'eva.tallaksen@gmail.com', // list of receivers
+    subject: 'Hello ✔', // Subject line
+    text: 'Hello world ✔', // plaintext body
+    html: '<b>Hello world ✔</b>', // html body
+	attachments: [{
+        filename: 'snapshot.jpg',
+        path: '/tmp/snowsnap/snapshot.jpg',
+    }]
+};
+
+// send mail with defined transport object
+transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+    }else{
+        console.log('Message sent: ' + info.response);
+    }
 });
