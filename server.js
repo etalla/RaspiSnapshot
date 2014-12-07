@@ -38,7 +38,7 @@ var mailOptions = {
     from: 'Snow Snap ✔ <snowsnap007@gmail.com>', // sender address
     to: 'eva.tallaksen@gmail.com', // list of receivers
     subject: 'Hello ✔', // Subject line
-    text: temperature, // plaintext body
+    text: 'the temperature is ' + temperature, // plaintext body
     html: '<b>Hello world ✔</b>', // html body
 	attachments: [{
         filename: 'snapshot.jpg',
