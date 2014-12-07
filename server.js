@@ -20,8 +20,6 @@ var sensor = require('ds18x20');
 var temperature = sensor.get(sensor.list()[0]);
 
 console.log("temperature is " + temperature);
-console.log("list is " + sensor.list);
-console.log("device is " + sensor.get(sensor.list()));
 
 var nodemailer = require('nodemailer');
 
@@ -41,9 +39,9 @@ var transporter = nodemailer.createTransport({
 var mailOptions = {
     from: 'Snow Snap ✔ <snowsnap007@gmail.com>', // sender address
     to: 'eva.tallaksen@gmail.com', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: 'the temperature is ' + temperature, // plaintext body
-    html: '<b>Hello world ✔</b>', // html body
+    subject: 'Your daily snap', // Subject line
+    text: 'The temperature is ' + temperature, // plaintext body
+    html: '<b>The temperature is ' + temperature + '</b>', // html body
 	attachments: [{
         filename: 'snapshot.jpg',
         path: '/tmp/snowsnap/snapshot.jpg',
