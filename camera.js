@@ -57,6 +57,7 @@ createCamera = function(_opts) {
     });
     return imageProc.stdout.pipe(process.stdout);
   };
+  return camera;
 };
 
 exports.createCamera = createCamera;
