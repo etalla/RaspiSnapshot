@@ -11,6 +11,9 @@ camera = createCamera({
 
 camera.takeSnapshot();
 
+var sensor = require('ds18x20');
+var temperature = sensor.get(sensor.list()[0]);
+
 var nodemailer = require('nodemailer');
 
 // create reusable transporter object using SMTP transport
@@ -30,7 +33,7 @@ var mailOptions = {
     from: 'Snow Snap ✔ <snowsnap007@gmail.com>', // sender address
     to: 'eva.tallaksen@gmail.com', // list of receivers
     subject: 'Hello ✔', // Subject line
-    text: 'Hello world ✔', // plaintext body
+    text: temperature, // plaintext body
     html: '<b>Hello world ✔</b>', // html body
 	attachments: [{
         filename: 'snapshot.jpg',

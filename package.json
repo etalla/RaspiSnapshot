@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "ds18x20": "^0.1.1",
     "nodemailer": "^1.3.0",
     "raspicam": "^0.2.13"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"preinstall": "bash deps.sh"
+    "preinstall": "bash deps.sh"
   },
   "author": "eva",
   "license": "ISC"
