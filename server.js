@@ -19,6 +19,10 @@ camera.takeSnapshot();
 var sensor = require('ds18x20');
 var temperature = sensor.get(sensor.list()[0]);
 
+console.log("temperature is " + temperature);
+console.log("list is " + sensor.list);
+console.log("device is " sensor.get(sensor.list()));
+
 var nodemailer = require('nodemailer');
 
 // create reusable transporter object using SMTP transport
