@@ -42,7 +42,7 @@ createCamera = function(_opts) {
   };
   camera.takeSnapshot = function() {
     var execOpts, imageProc, path;
-    path = opts.imageDirectory + 'snap.jpg';
+    path = opts.imageDirectory + 'snapshot.jpg';
     execOpts = {
       timeout: 10000
     };
