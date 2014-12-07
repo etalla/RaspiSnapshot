@@ -10,5 +10,6 @@ git clone https://github.com/raspberrypi/userland && \
 	make && \
 	cp bin/* /usr/bin/ && \
 	cp lib/* /usr/lib/ && \
+	cp userland/build/* /opt/vc/ && \
 	popd && \
 	popd
