@@ -27,8 +27,8 @@ var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-        user: 'snowsnap007@gmail.com',
-        pass: 'suavemente'
+        user: process.env.SENDER_EMAIL,
+        pass: process.env.SENDER_EMAIL_PW
     }
 });
 
@@ -38,7 +38,7 @@ var transporter = nodemailer.createTransport({
 // setup e-mail data with unicode symbols
 var mailOptions = {
     from: 'Snow Snap ✔ <snowsnap007@gmail.com>', // sender address
-    to: 'eva.tallaksen@gmail.com', // list of receivers
+    to: process.env.RECIPIENTS_EMAIL, // list of receivers
     subject: 'Your daily snap', // Subject line
     text: 'The temperature is ' + temperature, // plaintext body
     html: '<b>The temperature is ' + temperature + '</b>', // html body
